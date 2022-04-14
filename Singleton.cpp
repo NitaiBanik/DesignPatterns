@@ -21,8 +21,8 @@ public:
 Singleton *Singleton::instance = 0;
 int main()
 {
-    Singleton *s1 = s1->getInstance();
-    Singleton *s2 = s2->getInstance();
+    Singleton *s1 = Singleton::getInstance();
+    Singleton *s2 = Singleton::getInstance();
 
     if(s1 == s2)
         cout<<"Same instance"<<endl;
