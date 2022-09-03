@@ -4,28 +4,50 @@ using namespace std;
 class Singleton
 {
     static Singleton *instance;
+    static mutex mtx;
+    static int instanceCount;
 
     Singleton()
     {
-    };
+        instanceCount++;
+        cout<<"total instance = "<<instanceCount<<endl;
+    }
 
 public:
     static Singleton *getInstance()
     {
         if(!instance)
-            instance = new Singleton;
+        {
+            mtx.lock();
+            if(!instance)
+            {
+                instance = new Singleton();
+            }
+            mtx.unlock();
+        }
 
         return instance;
     }
 };
-Singleton *Singleton::instance = 0;
+
+Singleton* Singleton::instance = nullptr;
+int Singleton::instanceCount = 0;
+mutex Singleton:: mtx;
+
+void instance1()
+{
+    Singleton::getInstance();
+}
+
+void instance2()
+{
+    Singleton::getInstance();
+}
+
 int main()
 {
-    Singleton *s1 = Singleton::getInstance();
-    Singleton *s2 = Singleton::getInstance();
-
-    if(s1 == s2)
-        cout<<"Same instance"<<endl;
-    else
-        cout<<"Not same instance"<<endl;
+    thread first(instance1);
+    thread second(instance2);
+    first.join();
+    second.join();
 }
