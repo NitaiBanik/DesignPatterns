@@ -8,7 +8,7 @@ public:
 
 class PlainBackpack : public IBackpack {
 public:
-  virtual void assemble() { cout << "MainCompartment with it"; }
+  virtual void assemble() { cout << "MainCompartment with"; }
 };
 
 class BackpackDecorator : public IBackpack {
